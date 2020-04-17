@@ -137,8 +137,8 @@ class Form extends React.Component {
           <div className="form-group">
             <label>Color</label>
             <select
-              name="color"
-              value={this.state.cust.color}
+              name="color_material"
+              value={this.state.cust.color_material}
               className="custom-select"
               onChange={this.handleChange}
             >
