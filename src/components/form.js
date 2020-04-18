@@ -18,19 +18,14 @@ class Form extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get("/api/")
-      .then((res) => {
-        let colorList = res.data;
-        let cust = { ...this.state.cust, color_material: colorList[0].id };
-        this.setState({
-          colorList: colorList,
-          cust: cust,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    axios.get("/api/").then((res) => {
+      let colorList = res.data;
+      let cust = { ...this.state.cust, color_material: colorList[0].id };
+      this.setState({
+        colorList: colorList,
+        cust: cust,
       });
+    });
   }
 
   handleChange = (event) => {
@@ -77,29 +72,20 @@ class Form extends React.Component {
       success = false;
     }
     if (success === true) {
-      let cust = this.state.cust;
       let data = new FormData();
       data.append("name", cust.name);
       data.append("email", cust.email);
       data.append("zip_file", cust.zip_file);
       data.append("color_material", cust.color_material);
-      axios
-        .post("http://localhost:8000/api/", data)
-        .then((res) => {
-          console.log(res.statusText);
-          message.push({
-            head: "Thanks for choosing Us!",
-            para: "We'll get back to you soon",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          message.push({
-            head: "Something went wrong!",
-            para: "Please try again!",
-          });
-          success = false;
-        });
+
+      axios.post("http://localhost:8000/api/", data).then((res) => {
+        console.log(res.statusText);
+      });
+      message.push({
+        head: "Thanks for choosing Us!",
+        para: "We'll get back to you soon",
+      });
+      success = true;
     }
     this.setState({
       message: message,
@@ -160,7 +146,11 @@ class Form extends React.Component {
                 className="custom-file-input"
                 name="filename"
               />
-              <label className="custom-file-label">Choose file</label>
+              <label className="custom-file-label">
+                {this.state.cust.zip_file
+                  ? this.state.cust.zip_file.name
+                  : "Choose file"}
+              </label>
             </div>
           </div>
 
